@@ -1,6 +1,6 @@
-class CreateTodos < ActiveRecord::Migration[5.2]
+class CreateTasks < ActiveRecord::Migration[5.2]
   def change
-    create_table :todos do |t|
+    create_table :tasks do |t|
       t.integer :amount
       t.float :completion_time
 
