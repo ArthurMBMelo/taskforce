@@ -4,6 +4,7 @@ class TasksController < ApplicationController
   # GET /tasks or /tasks.json
   def index
     @tasks = Task.all
+    @total_minutes = total_minutes(@tasks)
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -73,5 +74,13 @@ class TasksController < ApplicationController
   # Only allow a list of trusted parameters through.
   def task_params
     params.require(:task).permit(:amount, :completion_time)
+  end
+
+  # Calculate the total minutes from a collection of tasks
+  def total_minutes(tasks)
+    total = tasks.sum("completion_time * amount")
+    hours = (total / 60).floor
+    minutes = (total % 60).floor
+    Time.parse("#{hours}:#{minutes}").strftime("%H:%M")
   end
 end
