@@ -1,0 +1,20 @@
+<h1>Monthly Totals</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Total minutes</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% (Date.current.beginning_of_month..Date.current.end_of_month).each do |date| %>
+      <tr>
+        <td><%= date.strftime('%Y-%m-%d') %></td>
+        <td><%= MonthlyTotal.find_by(date: date)&.total_minutes || 0 %></td>
+        <td><%= link_to 'Details', monthly_total_by_date_path(date: date) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

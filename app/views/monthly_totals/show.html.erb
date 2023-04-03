@@ -1,0 +1,20 @@
+<h1>Tasks on <%= @date.strftime('%Y-%m-%d') %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>amount</th>
+      <th>completion_time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.description %></td>
+        <td><%= task.minutes %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Back', monthly_totals_path %>

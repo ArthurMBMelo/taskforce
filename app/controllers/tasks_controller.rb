@@ -23,6 +23,7 @@ class TasksController < ApplicationController
   # POST /tasks or /tasks.json
   def create
     @task = Task.new(task_params)
+    @task.monthly_total = MonthlyTotal.find_or_create_by(date: Date.today)
 
     respond_to do |format|
       if @task.save
