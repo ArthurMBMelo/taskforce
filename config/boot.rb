@@ -5,4 +5,4 @@ require 'bootsnap/setup' # Speed up boot time by caching expensive operations.
 
 require 'yaml'
 YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE)
-YAML.load_file(File.expand_path('../database.yml', __FILE__), aliases: true)
+#YAML.load_file(File.expand_path('../database.yml', __FILE__), aliases: true)
