@@ -1,0 +1,4 @@
+runtime: ruby27
+entrypoint: bundle exec rails server --port $PORT
+env_variables:
+  SECRET_KEY_BASE: 1e4554df89970688042db53f7b39f146
