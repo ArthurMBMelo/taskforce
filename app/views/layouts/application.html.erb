@@ -12,5 +12,18 @@
   <body>
     <%= render "layouts/navbar" %>
     <%= yield %>
+    <div class="container">
+      <% flash.each do |name, msg| %>
+        <% if msg.is_a?(String) %>
+          <div class="alert alert-<%= name == :notice ? "success" : "danger" %> alert-dismissible fade show" role="alert">
+            <%= content_tag :div, msg %>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
   </body>
 </html>

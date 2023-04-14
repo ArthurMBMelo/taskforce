@@ -1,9 +1,11 @@
 class TasksController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_monthly_total, only: %i[create update]
   before_action :set_task, only: %i[show edit update destroy]
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = current_user.tasks || []
     @total_minutes = total_minutes(@tasks)
   end
 
@@ -13,7 +15,9 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   def new
-    @task = Task.new
+    @monthly_total =
+      current_user.monthly_totals.find_or_create_by(date: Date.today)
+    @task = @monthly_total.tasks.build
   end
 
   # GET /tasks/1/edit
@@ -22,8 +26,10 @@ class TasksController < ApplicationController
 
   # POST /tasks or /tasks.json
   def create
-    @task = Task.new(task_params)
-    @task.monthly_total = MonthlyTotal.find_or_create_by(date: Date.today)
+    @monthly_total =
+      current_user.monthly_totals.find_or_create_by(date: Date.today)
+    @task = @monthly_total.tasks.build(task_params)
+    @task.user_id = current_user.id
 
     respond_to do |format|
       if @task.save
@@ -68,8 +74,14 @@ class TasksController < ApplicationController
   private
 
   # Use callbacks to share common setup or constraints between actions.
+  def set_monthly_total
+    @monthly_total =
+      current_user.monthly_totals.find_or_create_by(date: Date.today)
+    @monthly_total.update_total_minutes
+  end
+
   def set_task
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

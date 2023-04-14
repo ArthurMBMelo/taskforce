@@ -10,9 +10,10 @@
   </thead>
   <tbody>
     <% (Date.current.beginning_of_month..Date.current.end_of_month).each do |date| %>
+      <% monthly_total = current_user.monthly_totals.find_or_create_by(date: date) %>
       <tr>
         <td><%= date.strftime('%Y-%m-%d') %></td>
-        <td><%= MonthlyTotal.find_by(date: date)&.total_minutes || 0 %></td>
+        <td><%= monthly_total.total_minutes %></td>
         <td><%= link_to 'Details', monthly_total_by_date_path(date: date) %></td>
       </tr>
     <% end %>

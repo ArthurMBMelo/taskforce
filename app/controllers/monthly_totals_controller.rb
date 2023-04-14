@@ -1,6 +1,16 @@
 class MonthlyTotalsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
-    @monthly_totals = MonthlyTotal.all
+    # Busca os registros de MonthlyTotal do mês atual
+    @monthly_totals =
+      MonthlyTotal.where(
+        date: Date.current.beginning_of_month..Date.current.end_of_month
+      )
+
+    # Cria um hash que mapeia cada data para seu respectivo total de minutos
+    @totals_by_date =
+      @monthly_totals.index_by(&:date).transform_values(&:total_minutes)
   end
 
   def show
